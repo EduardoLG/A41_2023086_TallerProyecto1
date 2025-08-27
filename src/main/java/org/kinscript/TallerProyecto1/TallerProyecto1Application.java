@@ -13,7 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import java.util.List;
 import java.util.Scanner;
 
-@SpringBootApplication
+// @SpringBootApplication
 public class TallerProyecto1Application implements CommandLineRunner{
 	@Autowired
 	private ContactosService contactosService;

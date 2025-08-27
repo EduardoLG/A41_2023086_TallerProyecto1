@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<h:html xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Registro de Contacto</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex/themes/primeone-dark.css"/>
+    </h:head>
+    <h:body>
+        <div class="card">
+            <h:form id="formulario-contactos">
+                <p:growl id="mensaje-emergente" showDetails="true"/>
+                <div class="card">
+                    <p:menubar>
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                update=":formulario-contactos:tabla-contactos"
+                                actionListener="#{indexController.cargarContactos}"/>
+                    <p:menuitem value="Nuevo Contacto" icon="pi pi-fw pi-plus"
+                                actionListener="#{indexController.agregarContacto}"
+                                update=":formulario-modal:ventana-contacto"
+                                oncomplete="PF('ventanaModalContacto').show();"/>
+                    </p:menubar>
+
+                    <div class="card">
+                        <p:dataTable value="#{indexController.contactos}" var="contacto" id="tabla-contactos" widgetVar="contactoTabla">
+                            <f:facet name="header">
+                                <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                                    <div class="flex align-items-center justify-content-center w-20rem h4rem bg-yellow-500 font-bold m-2
+                                text-gray-900 border-round">
+                                        <h3>Registro de Contactos - KinScript</h3>
+                                    </div>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="ID">
+                                <h:outputText value="#{contacto.idContacto}"/>
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{contacto.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Numero de Telefono">
+                                <h:outputText value="#{contacto.numeroTelefono}"/>
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{contacto.email}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton value="Editar" icon="pi pi-pencil" 
+                                                update=":formulario-modal:ventana-contacto"
+                                                process="@this"
+                                                oncomplete="PF('ventanaModalContacto').show();"
+                                                class="ui-button-primary"
+                                                style="margin-right:.5rem">
+                                    <f:setPropertyActionListener
+                                     value="#{contacto}" 
+                                     target="#{indexController.contactoSeleccionado}"/>
+                                </p:commandButton>
+                                <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"
+                                                 action="#{indexController.eliminarContacto}"
+                                                 update=":formulario-contactos:tabla-contactos, :formulario-contactos:mensaje-emergente"
+                                                 style="margin-left:.5rem">
+                                    <f:setPropertyActionListener
+                                     value="#{contacto}" 
+                                     target="#{indexController.contactoSeleccionado}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </h:form>
+            <h:form id="formulario-modal">
+                <p:dialog header="Detalle Contactos" showEffect="fade" modal="true" widgetVar="ventanaModalContacto" responsive="true">
+                    <p:outputPanel id="ventana-contacto" class="ui-fluid">
+                        <div class="field">
+                            <p:outputPanel for="nombre">Nombre</p:outputPanel>
+                            <p:inputText id="nombre" value="#{indexController.contactoSeleccionado.nombre}" required="true"/>
+                        </div>
+                        <div class="field">
+                            <p:outputPanel for="numeroTelefono">Numero de Telefono</p:outputPanel>
+                            <p:inputText id="numeroTelefono" value="#{indexController.contactoSeleccionado.numeroTelefono}" required="true"/>
+                        </div>
+                        <div class="field">
+                            <p:outputPanel for="email">Email</p:outputPanel>
+                            <p:inputText id="email" value="#{indexController.contactoSeleccionado.email}" required="true"/>
+                        </div>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar"
+                                            icon="pi pi-check"
+                                            process="ventana-contacto @this"
+                                            actionListener="#{indexController.guardarContacto}"/>
+                    </f:facet>
+                </p:dialog>
+            </h:form>
+        </div>
+    </h:body>
+</h:html>
