@@ -15,6 +15,7 @@
                     <p:menubar>
                         <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
                                 update=":formulario-contactos:tabla-contactos"
+                                    action="paginaPrincipal.xhtml?faces-redirect=true"
                                 actionListener="#{indexController.cargarContactos}"/>
                     <p:menuitem value="Nuevo Contacto" icon="pi pi-fw pi-plus"
                                 actionListener="#{indexController.agregarContacto}"
@@ -55,11 +56,11 @@
                                     <f:setPropertyActionListener
                                      value="#{contacto}" 
                                      target="#{indexController.contactoSeleccionado}"/>
+                                    <p:resetInput target="formulario-modal:ventana-contacto"/>
                                 </p:commandButton>
                                 <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"
-                                                 action="#{indexController.eliminarContacto}"
-                                                 update=":formulario-contactos:tabla-contactos, :formulario-contactos:mensaje-emergente"
-                                                 style="margin-left:.5rem">
+                                                 process="@this"
+                                                 oncomplete="PF('ventanaEliminarContacto').show()">
                                     <f:setPropertyActionListener
                                      value="#{contacto}" 
                                      target="#{indexController.contactoSeleccionado}"/>
@@ -92,6 +93,20 @@
                                             actionListener="#{indexController.guardarContacto}"/>
                     </f:facet>
                 </p:dialog>
+                <p:confirmDialog widgetVar="ventanaEliminarContacto"
+                                showEffect="fade" width="300"
+                                message="¿Desea eliminar el contacto?"
+                                header="Confirmar" severity="warn">
+
+                    <p:commandButton value="Si" icon="pi pi-check"
+                                     process="@this"
+                                     actionListener="#{indexController.eliminarContacto}"
+                                     oncomplete="PF('ventanaEliminarContacto').hide()"/>
+                    <p:commandButton value="No" icon="pi pi-times"
+                                     onclick="PF('ventanaEliminarContacto').hide()"
+                                     styleClass="ui-button-secondary" type="button"/>
+
+                </p:confirmDialog>
             </h:form>
         </div>
     </h:body>

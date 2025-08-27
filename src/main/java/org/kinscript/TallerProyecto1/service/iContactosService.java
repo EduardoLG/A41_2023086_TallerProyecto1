@@ -1,9 +1,12 @@
 package org.kinscript.TallerProyecto1.service;
 import java.util.List;
 import org.kinscript.TallerProyecto1.entity.Contactos;
+import org.kinscript.TallerProyecto1.entity.Usuario;
+
 public interface iContactosService {
-    public List<Contactos> listarContactos();
-    public Contactos buscarContactoPorId(Integer idContacto);
-    public void guardarContacto(Contactos contactos);
-    public void eliminarContacto(Contactos contactos);
+    List<Contactos> listarContactos();
+    List<Contactos> listarContactosPorUsuario(Usuario usuario);
+    Contactos buscarContactoPorId(Integer idContacto);
+    void guardarContacto(Contactos contactos);
+    void eliminarContacto(Contactos contactos);
 }

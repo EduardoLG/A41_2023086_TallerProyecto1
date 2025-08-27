@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Login</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #c2e9fb, #a1c4fd);
+        }
+        .login-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+
+        .p-inputtext, .p-password {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .p-button {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .login-form {
+            width: 100%;
+        }
+    </style>
+</h:head>
+
+<h:body class="p-d-flex p-jc-center p-ai-center" style="height: 100vh;">
+
+    <div    class="login-card">
+
+        <div class="login-title">Iniciar Sesión</div>
+
+        <h:form styleClass="login-form">
+
+            <p:inputText placeholder="Usuario"
+                         value="#{inicioSesionController.usuario}"
+                         required="true"
+                         styleClass="p-inputtext" />
+
+            <p:password placeholder="Contraseña"
+                        value="#{inicioSesionController.password}"
+                        required="true"
+                        feedback="false"
+                        styleClass="p-password" />
+
+            <p:commandButton value="Entrar"
+                             action="#{inicioSesionController.iniciarSesion}"
+                             styleClass="p-button-rounded p-button-primary" />
+
+        </h:form>
+    </div>
+
+</h:body>
+</html>

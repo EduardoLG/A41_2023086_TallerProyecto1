@@ -1,4 +1,5 @@
 package org.kinscript.TallerProyecto1.service;
+import org.kinscript.TallerProyecto1.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,11 @@ public class ContactosService implements iContactosService{
     public List<Contactos> listarContactos() {
         List<Contactos> contactos = contactoRepository.findAll();
         return contactos;
+    }
+
+    @Override
+    public List<Contactos> listarContactosPorUsuario(Usuario usuario) {
+        return List.of();
     }
 
     @Override
