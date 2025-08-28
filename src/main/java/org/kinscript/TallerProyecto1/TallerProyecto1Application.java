@@ -48,6 +48,10 @@ public class TallerProyecto1Application implements CommandLineRunner {
 
 		while (intentos > 0) {
 			logger.info("***** Iniciar Sesión *****");
+            logger.info("Usuarios:");
+            logger.info("1) Usuario: Eduardo, Contraseña: hola123");
+            logger.info("2) Usuario: Pedro, Contraseña: pass2");
+            logger.info("3) Usuario: Luis, Contraseña: pass3");
 			logger.info("Usuario:");
 			String usuario = consola.nextLine();
 			logger.info("Contraseña:");
@@ -91,79 +95,86 @@ public class TallerProyecto1Application implements CommandLineRunner {
 	}
 
 	private boolean ejecutarOpciones(Scanner consola, int opcion, Usuario usuarioLogueado) {
-		var salir = false;
-		switch (opcion) {
-			case 1 -> {
-				logger.info(salto + "*** Tus contactos" + salto);
-				List<?> contactos = contactosService.listarContactos();
-				contactos.forEach(contacto -> logger.info(contacto.toString() + salto));
-			}
-			case 2 -> {
-				logger.info(salto + "Buscar Contacto por su ID" + salto);
-				var codigo = Integer.parseInt(consola.nextLine());
-				var contacto = contactosService.buscarContactoPorId(codigo);
-				if (contacto != null) {
-					logger.info("Contacto encontrado: " + contacto + salto);
-				} else {
-					logger.info("Contacto no encontrado" + salto);
-				}
-			}
-			case 3 -> {
-				logger.info(salto + "*** Agregar Contactos ***" + salto);
-				logger.info("Ingrese el nombre");
-				var nombre = consola.nextLine();
-				logger.info("Ingrese el telefono");
-				var numeroTelefono = consola.nextLine();
-				logger.info("Ingrese el email");
-				var email = consola.nextLine();
+    var salir = false;
+    switch (opcion) {
+        case 1 -> { 
+            logger.info(salto + "*** Tus contactos ***" + salto);
+            List<Contactos> contactos = contactosService.listarContactosPorUsuario(usuarioLogueado);
+            if (contactos.isEmpty()) {
+                logger.info("No tienes contactos registrados" + salto);
+            } else {
+                contactos.forEach(contacto -> logger.info(contacto.toString() + salto));
+            }
+        }
+        case 2 -> { 
+            logger.info(salto + "Buscar Contacto por su ID" + salto);
+            var codigo = Integer.parseInt(consola.nextLine());
+            var contacto = contactosService.buscarContactoPorId(codigo);
+            if (contacto != null && contacto.getUsuario() != null &&
+                contacto.getUsuario().getIdUsuario().equals(usuarioLogueado.getIdUsuario())) {
+                logger.info("Contacto encontrado: " + contacto + salto);
+            } else {
+                logger.info("Contacto no encontrado o no pertenece a tu usuario" + salto);
+            }
+        }
+        case 3 -> {
+            logger.info(salto + "*** Agregar Contacto ***" + salto);
+            logger.info("Ingrese el nombre");
+            var nombre = consola.nextLine();
+            logger.info("Ingrese el telefono");
+            var numeroTelefono = consola.nextLine();
+            logger.info("Ingrese el email");
+            var email = consola.nextLine();
 
-				var contacto = new Contactos();
-				contacto.setNombre(nombre);
-				contacto.setNumeroTelefono(numeroTelefono);
-				contacto.setEmail(email);
-				contactosService.guardarContacto(contacto);
-				logger.info("Contacto agregado: " + contacto + salto);
-			}
-			case 4 -> {
-				logger.info(salto + "*** Modificar Contacto ***" + salto);
-				logger.info("Agregue el codigo del contacto que desea modificar");
-				var codigo = Integer.parseInt(consola.nextLine());
-				var contacto = contactosService.buscarContactoPorId(codigo);
-				if (contacto != null) {
-					logger.info("Ingrese el nombre");
-					var nombre = consola.nextLine();
-					logger.info("Ingrese el telefono");
-					var numeroTelefono = consola.nextLine();
-					logger.info("Ingrese el email");
-					var email = consola.nextLine();
-					contacto.setNombre(nombre);
-					contacto.setNumeroTelefono(numeroTelefono);
-					contacto.setEmail(email);
-					contactosService.guardarContacto(contacto);
-
-				} else {
-					logger.info("Contacto no Encontrado" + salto);
-				}
-			}
-			case 5 -> {
-				logger.info(salto + "*** Eliminar Contacto ***" + salto);
-				logger.info("Ingrese el ID del contacto que desea eliminar");
-				var codigo = Integer.parseInt(consola.nextLine());
-				var contacto = contactosService.buscarContactoPorId(codigo);
-				if (contacto != null) {
-					contactosService.eliminarContacto(contacto);
-					logger.info("Contacto eliminado, adios" + contacto + salto);
-				} else {
-					logger.info("Contacto no encontrado" + salto);
-				}
-
-			}
-			case 6 -> {
-				logger.info("Adios" + salto);
-				salir = true;
-			}
-			default -> logger.info("Opcion invalida");
-		}
-		return salir;
+            var contacto = new Contactos();
+            contacto.setNombre(nombre);
+            contacto.setNumeroTelefono(numeroTelefono);
+            contacto.setEmail(email);
+            contacto.setUsuario(usuarioLogueado); 
+            contactosService.guardarContacto(contacto);
+            logger.info("Contacto agregado: " + contacto + salto);
+        }
+        case 4 -> { 
+            logger.info(salto + "*** Modificar Contacto ***" + salto);
+            logger.info("Ingrese el ID del contacto que desea modificar");
+            var codigo = Integer.parseInt(consola.nextLine());
+            var contacto = contactosService.buscarContactoPorId(codigo);
+            if (contacto != null && contacto.getUsuario() != null &&
+                contacto.getUsuario().getIdUsuario().equals(usuarioLogueado.getIdUsuario())) {
+                logger.info("Ingrese el nombre");
+                var nombre = consola.nextLine();
+                logger.info("Ingrese el telefono");
+                var numeroTelefono = consola.nextLine();
+                logger.info("Ingrese el email");
+                var email = consola.nextLine();
+                contacto.setNombre(nombre);
+                contacto.setNumeroTelefono(numeroTelefono);
+                contacto.setEmail(email);
+                contactosService.guardarContacto(contacto);
+                logger.info("Contacto modificado: " + contacto + salto);
+            } else {
+                logger.info("Contacto no encontrado o no pertenece a tu usuario" + salto);
+            }
+        }
+        case 5 -> { 
+            logger.info(salto + "*** Eliminar Contacto ***" + salto);
+            logger.info("Ingrese el ID del contacto que desea eliminar");
+            var codigo = Integer.parseInt(consola.nextLine());
+            var contacto = contactosService.buscarContactoPorId(codigo);
+            if (contacto != null && contacto.getUsuario() != null &&
+                contacto.getUsuario().getIdUsuario().equals(usuarioLogueado.getIdUsuario())) {
+                contactosService.eliminarContacto(contacto);
+                logger.info("Contacto eliminado: " + contacto + salto);
+            } else {
+                logger.info("Contacto no encontrado o no pertenece a tu usuario" + salto);
+            }
+        }
+        case 6 -> { // Salir
+            logger.info("Adios" + salto);
+            salir = true;
+        }
+        default -> logger.info("Opción inválida");
+    }
+    return salir;
 	}
 }

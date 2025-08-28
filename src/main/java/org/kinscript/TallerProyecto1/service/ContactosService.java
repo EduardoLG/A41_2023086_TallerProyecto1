@@ -20,7 +20,7 @@ public class ContactosService implements iContactosService{
 
     @Override
     public List<Contactos> listarContactosPorUsuario(Usuario usuario) {
-        return List.of();
+        return contactoRepository.findByUsuario(usuario);
     }
 
     @Override

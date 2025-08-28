@@ -49,11 +49,13 @@
 
 <h:body class="p-d-flex p-jc-center p-ai-center" style="height: 100vh;">
 
-    <div    class="login-card">
+    <div class="login-card">
 
         <div class="login-title">Iniciar Sesión</div>
 
-        <h:form styleClass="login-form">
+        <h:form id="loginForm" styleClass="login-form">
+
+            <p:growl id="mensajeLogin" showDetail="true" life="3000" />
 
             <p:inputText placeholder="Usuario"
                          value="#{inicioSesionController.usuario}"
@@ -68,6 +70,7 @@
 
             <p:commandButton value="Entrar"
                              action="#{inicioSesionController.iniciarSesion}"
+                             update="mensajeLogin"
                              styleClass="p-button-rounded p-button-primary" />
 
         </h:form>

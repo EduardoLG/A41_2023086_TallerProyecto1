@@ -1,12 +1,14 @@
 package org.kinscript.TallerProyecto1.controller;
 
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import java.awt.Desktop;
 import java.net.URI;
 
 @Component
+@Profile("web")
 public class BrowserLauncher implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override

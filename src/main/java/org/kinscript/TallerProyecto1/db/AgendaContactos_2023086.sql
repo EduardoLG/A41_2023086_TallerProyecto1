@@ -1,13 +1,26 @@
+drop database if exists AgendaContactos_2023086;
 create database AgendaContactos_2023086;
 use AgendaContactos_2023086;
 
-create table Contactos(
-	idContacto integer auto_increment,
+
+create table Usuario (
+    idUsuario int auto_increment primary key,
+    usuario varchar(50),
+    password varchar(50) 
+);
+
+insert into Usuario (usuario, password) values ('Eduardo', 'hola123');
+insert into Usuario (usuario, password) values ('Pedro', 'pass2');
+insert into Usuario (usuario, password) values ('Luis', 'pass3');
+
+create table Contactos (
+    idContacto integer auto_increment,
     nombre varchar(200),
     numeroTelefono varchar(16),
     email varchar(64),
-    constraint pk_contactos primary key (idContacto)
+    idUsuario int not null, 
+    constraint pk_contactos primary key (idContacto),
+    constraint fk_usuario foreign key (idUsuario)
+        references Usuario(idUsuario)
+      
 );
-
-insert into Contactos(nombre, numeroTelefono, email) values ('Eduardo','12345678','eduardo@gmail.com');
-select * from Contactos;
